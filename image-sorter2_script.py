@@ -12,21 +12,25 @@
 
  you need also to provide your specific input (source folder, labels and other) in the preamble
  original Author: Christian Baumgartner (c.baumgartner@imperial.ac.uk)
- changes, version 2: Nestor Arsenov (nestorarsenov_AT_gmail_DOT_com)
+ changes, version 2: Nestor Arsenov (nestorarsenov_AT_gmail_DOT_com) and Ashray Aman (ashray17aman@gmail.com)
  Date: 24. Dec 2018
 """
 
+import pandas as pd
+import os
+import numpy as np
+
+import argparse
+import tkinter as tk
+import os
+from shutil import copyfile, move
+from PIL import ImageTk, Image
+
 
 # Define global variables, which are to be changed by user:
-
-# In[5]:
-
-
-##### added in version 2
-
 # the folder in which the pictures that are to be sorted are stored
 # don't forget to end it with the sign '/' !
-input_folder = '/file_path/to/image_folder/'
+input_folder = 'converted/'
 
 # the different folders into which you want to sort the images, e.g. ['cars', 'bikes', 'cats', 'horses', 'shoes']
 labels = ["label1", "label2", "label3"]
@@ -42,25 +46,15 @@ copy_or_move = 'copy'
 # If you provide a path to file that already exists, than this file will be used for keeping track of the storing.
 # This means: 1st time you run this script and such a file doesn't exist the file will be created and populated,
 # 2nd time you run the same script, and you use the same df_path, the script will use the file to continue the sorting.
-df_path = '/file_path/to/non_existing_file_df.txt'
+df_path = input_folder+'non_existing_file_df.txt'
 
 # a selection of what file-types to be sorted, anything else will be excluded
 file_extensions = ['.jpg', '.png', '.whatever']
-#####
 
 
-# In[8]:
-
-
-import pandas as pd
-import os
-import numpy as np
-
-import argparse
-import tkinter as tk
-import os
-from shutil import copyfile, move
-from PIL import ImageTk, Image
+# set resize to True to resize image keeping same aspect ratio
+# set resize to False to display original image
+resize = True
 
 class ImageGui:
     """
@@ -133,7 +127,7 @@ class ImageGui:
             
         #### added in version 2
         # Add sorting label
-        sorting_string = df.sorted_in_folder[self.index].split(os.sep)[-2]
+        sorting_string = os.path.split(df.sorted_in_folder[self.index])[-2]
         self.sorting_label = tk.Label(frame, text=("in folder: %s" % (sorting_string)), width=15)
         
         # Place typing input in grid, in case the mode is 'copy'
@@ -167,7 +161,7 @@ class ImageGui:
         self.progress_label.configure(text=progress_string)
         
         #### added in version 2
-        sorting_string = df.sorted_in_folder[self.index].split(os.sep)[-2] #shows the last folder in the filepath before the file
+        sorting_string = os.path.split(df.sorted_in_folder[self.index])[-2] #shows the last folder in the filepath before the file
         self.sorting_label.configure(text=("in folder: %s" % (sorting_string)))
         ####
 
@@ -186,7 +180,7 @@ class ImageGui:
         progress_string = "%d/%d" % (self.index+1, self.n_paths)
         self.progress_label.configure(text=progress_string)
         
-        sorting_string = df.sorted_in_folder[self.index].split(os.sep)[-2] #shows the last folder in the filepath before the file
+        sorting_string = os.path.split(df.sorted_in_folder[self.index])[-2] #shows the last folder in the filepath before the file
         self.sorting_label.configure(text=("in folder: %s" % (sorting_string)))
         
         if self.index < self.n_paths:
@@ -203,8 +197,7 @@ class ImageGui:
         self.index += 1
         progress_string = "%d/%d" % (self.index+1, self.n_paths)
         self.progress_label.configure(text=progress_string)
-        
-        sorting_string = df.sorted_in_folder[self.index].split(os.sep)[-2] #shows the last folder in the filepath before the file
+        sorting_string = os.path.split(df.sorted_in_folder[self.index])[-2] #shows the last folder in the filepath before the file
         self.sorting_label.configure(text=("in folder: %s" % (sorting_string)))
         
         if self.index < self.n_paths:
@@ -266,23 +259,27 @@ class ImageGui:
         
         progress_string = "%d/%d" % (self.index+1, self.n_paths)
         self.progress_label.configure(text=progress_string)
-        
-        sorting_string = df.sorted_in_folder[self.index].split(os.sep)[-2] #shows the last folder in the filepath before the file
+        sorting_string = os.path.split(df.sorted_in_folder[self.index])[-2] #shows the last folder in the filepath before the file
         self.sorting_label.configure(text=("in folder: %s" % (sorting_string)))
         
         self.set_image(df.sorted_in_folder[self.index])
 
     @staticmethod
-    def _load_image(path, size=(400,700)):
+    def _load_image(path):
         """
         Loads and resizes an image from a given path using the Pillow library
         :param path: Path to image
-        :param size: Size of display image
-        :return: Resized image
+        :return: Resized or original image 
         """
         image = Image.open(path)
-        image = image.resize(size, Image.ANTIALIAS)
+        if(resize):
+            max_height = 500
+            img = image 
+            s = img.size
+            ratio = max_height / s[1]
+            image = img.resize((int(s[0]*ratio), int(s[1]*ratio)), Image.ANTIALIAS)
         return image
+
 
     @staticmethod
     def _copy_image(label, ind):

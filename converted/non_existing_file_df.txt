@@ -1,0 +1,17 @@
+,Unnamed: 0,im_path,sorted_in_folder
+0,0,converted/Invasive_0.jpg,converted\label1\Invasive_0.jpg
+1,1,converted/Invasive_1.jpg,converted\label2\Invasive_1.jpg
+2,2,converted/Invasive_2.jpg,converted\label3\Invasive_2.jpg
+3,3,converted/Invasive_3.jpg,converted\label3\Invasive_3.jpg
+4,4,converted/Invasive_4.jpg,converted/Invasive_4.jpg
+5,5,converted/Invasive_5.jpg,converted\label2\Invasive_5.jpg
+6,6,converted/Invasive_6.jpg,converted/Invasive_6.jpg
+7,7,converted/Invasive_7.jpg,converted/Invasive_7.jpg
+8,8,converted/Normal_0.jpg,converted/Normal_0.jpg
+9,9,converted/Normal_1.jpg,converted/Normal_1.jpg
+10,10,converted/Normal_2.jpg,converted/Normal_2.jpg
+11,11,converted/Normal_3.jpg,converted/Normal_3.jpg
+12,12,converted/Normal_4.jpg,converted/Normal_4.jpg
+13,13,converted/Normal_5.jpg,converted/Normal_5.jpg
+14,14,converted/Normal_6.jpg,converted/Normal_6.jpg
+15,15,converted/Normal_7.jpg,converted/Normal_7.jpg
