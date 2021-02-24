@@ -1,15 +1,24 @@
 from PIL import Image
 import os
-
+import easygui
 
 ''' these are the inputs to be specified by user'''
 # name of folder containing input images.
 # Keep all the images in jpg or png format in the folder name mentioned
 # do not put folders inside mentioned folder, paste all the images in the folder
-inFolder = 'dataset/'
+
+# file = easygui.fileopenbox()
+file = easygui.diropenbox()
+print('dataset folder directory: '+ file)
+
+inFolder = file+'\\'
 
 # name of folder containing input images
-outFolder = 'converted/'
+outFolder = '\\'.join(file.split('\\')[:-1])
+outFolder = outFolder + '\converted'+'\\'
+
+print('infolder is ' +inFolder)
+print('outfolder is '+outFolder)
 
 # dimensions of patches in pixels (number of pixels in image = input features)
 height = 192
@@ -20,7 +29,9 @@ width = 256
 inImages = os.listdir(inFolder)
 
 # if output folder not present then create
-if(outFolder[:-1] not in os.listdir()):
+# print(outFolder.split('/')[-2])
+# print(" is the path")
+if(outFolder.split('\\')[-2] not in os.listdir()):
     os.mkdir(outFolder[:-1])
 
 # make patches per image
@@ -57,3 +68,4 @@ for image in inImages:
         xiter += width
         yiter += height
     print(image,idx)
+input("press enter to exit")
