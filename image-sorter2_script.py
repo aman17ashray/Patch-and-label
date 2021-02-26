@@ -3,12 +3,12 @@
 """
  One-click image sorting/labelling script. Copies or moves images from a folder into subfolders. 
  This script launches a GUI which displays one image after the other and lets the user give different labels
- from a list provided as input to the script. In contrast to original version, version 2 allows for 
+ from a list provided as input to the script. It allows for 
  relabelling and keeping track of the labels.
  Provides also short-cuts - press "1" to put into "label 1", press "2" to put into "label 2" a.s.o.
 
  USAGE:
- run 'python sort_folder_vers2.py' or copy the script in a jupyter notebook and run then
+ run 'python image-sorter_script.py'
 
  you need also to provide your specific input (source folder, labels and other) in the preamble
  original Author: Christian Baumgartner (c.baumgartner@imperial.ac.uk)
@@ -16,24 +16,24 @@
  Date: 24. Dec 2018
 """
 
+import os
 import pandas as pd
-import os
-import numpy as np
-
-import argparse
 import tkinter as tk
-import os
 from shutil import copyfile, move
 from PIL import ImageTk, Image
+import easygui
 
 
 # Define global variables, which are to be changed by user:
 # the folder in which the pictures that are to be sorted are stored
 # don't forget to end it with the sign '/' !
-input_folder = 'converted/'
-
+# input_folder = 'converted/'
+print("finding patches folder")
+input_folder = easygui.diropenbox()
+input_folder += '\\'
+print('patches directory: '+input_folder)
 # the different folders into which you want to sort the images, e.g. ['cars', 'bikes', 'cats', 'horses', 'shoes']
-labels = ["label1", "label2", "label3"]
+labels = ["Type 1 Cancer", "Type 2 cancer", "Non Cancerous"]
 
 # provide either 'copy' or 'move', depending how you want to sort the images into the new folders
 # - 'move' starts where you left off last time sorting, no 'go to #pic', works with number-buttons for labeling, no txt-file for tracking after closing GUI, saves memory
